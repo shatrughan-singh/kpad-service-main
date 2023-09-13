@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    volumes:
+    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    links:
+      - influxdb
+    ports:
+    - '8125:8125'
+
+  influxdb:
+        environment:
+            INFLUXDB_DB: project_dev
+            INFLUXDB_ADMIN_USER: Shatrughan
+            INFLUXDB_ADMIN_PASSWORD: Shatru8019
+            INFLUXDB_HTTP_AUTH_ENABLED: "true"
+        image: influxdb:latest
+        ports:
+            - "8089:8089"
+            - "8087:8082"
+        volumes:
+            - /tmp/influxdb:/var/lib/influxdb
